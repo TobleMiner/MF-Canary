@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Level;
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
+import net.canarymod.commandsys.CommandDependencyException;
+import net.canarymod.commandsys.CommandListener;
 import net.canarymod.plugin.Plugin;
 import tobleminer.minefight.command.CommandHandler;
 import tobleminer.minefight.engine.GameEngine;
@@ -22,7 +24,7 @@ import tobleminer.minefight.network.ProtocolLibSafeLoader;
 import tobleminer.minefight.permission.PermissionManager;
 import tobleminer.minefight.util.Util;
 
-public class Main extends Plugin
+public class Main extends Plugin implements CommandListener
 {
 	private final EventListener eventListener = new EventListener(this);
 	public static Main main;
@@ -55,21 +57,28 @@ public class Main extends Plugin
 		Main.gameEngine.init();
 		logger.log(Level.INFO,gameEngine.dict.get("preEnable"));
 		Canary.hooks().registerListener(eventListener, this);
+		try 
+		{
+			Canary.commands().registerCommands(this, this, false);
+		}
+		catch (CommandDependencyException e)
+		{
+			e.printStackTrace();
+		}
 		if(!(new LicenseHandler().init(this)))
 		{
-			Error err = new Error("License check failed!","The plugins license could not be copied into the plugin's folder!", "The plugin won't start until the license is copied.", this.getClass().getName(), ErrorSeverity.DOUBLERAINBOOM);
+			Error err = new Error("License check failed!", "The plugins license could not be copied into the plugin's folder!", "The plugin won't start until the license is copied.", this.getClass().getName(), ErrorSeverity.DOUBLERAINBOOM);
 			ErrorReporter.reportError(err);
 			return;
 		}
 		Main.pm = new PermissionManager();
-		//Main.plsl = new ProtocolLibSafeLoader(this);
+		Main.plsl = new ProtocolLibSafeLoader(this);
 		Main.cmdhandler = new CommandHandler(this);
 	}
 	
 	@Override
 	public void disable()
 	{
-		this.gtimer.cancel();
 		gameEngine.isExiting = true;
 		logger.log(Level.INFO,gameEngine.dict.get("onDisable"));
 		Main.gameEngine.endAllMatches();

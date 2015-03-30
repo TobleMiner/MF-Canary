@@ -39,7 +39,7 @@ public class BlockSyncCalls
 			}
 			return;
 		}
-		Main.main.getServer().getScheduler().runTask(Main.main, new Runnable()
+		Main.main.get.getScheduler().runTask(Main.main, new Runnable()
 		{		
 			public void run()
 			{

@@ -1,7 +1,6 @@
 package tobleminer.minefight.permission.interfaces;
 
-import org.bukkit.entity.Player;
-
+import net.canarymod.api.entity.living.humanoid.Player;
 import tobleminer.minefight.permission.PermissionInterface;
 
 public class PermissionInterfaceFallbackMode extends PermissionInterface
@@ -12,7 +11,7 @@ public class PermissionInterfaceFallbackMode extends PermissionInterface
 	{
 		if(p != null)
 		{
-			return p.isOp();
+			return p.isAdmin();
 		}
 		return false;
 	}

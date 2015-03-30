@@ -1,9 +1,8 @@
 package tobleminer.minefight.command.module;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
+import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.chat.ChatFormat;
+import net.canarymod.chat.MessageReceiver;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.command.CommandHelp;
 import tobleminer.minefight.permission.Permission;
@@ -17,7 +16,7 @@ public class ModuleAdmin extends CommandModule
 		this.mane = mane;
 	}
 	
-	public boolean handleCommand(String[] args, CommandSender sender)
+	public boolean handleCommand(String[] args, MessageReceiver sender)
 	{
 		if(args.length >= 1)
 		{
@@ -28,12 +27,12 @@ public class ModuleAdmin extends CommandModule
 					Player p = (Player)sender;
 					if(!Main.cmdhandler.pm.hasPlayerPermission(p, Permission.MPVP_RELOAD))
 					{
-						p.sendMessage(this.noPermMsg);
+						p.message(this.noPermMsg);
 						return true;
 					}
 				}
 				Main.gameEngine.reload(this.mane);
-				sender.sendMessage(ChatColor.DARK_GREEN + Main.gameEngine.dict.get("configrl"));				
+				sender.message(ChatFormat.GREEN + Main.gameEngine.dict.get("configrl"));				
 				return true;
 			}
 		}

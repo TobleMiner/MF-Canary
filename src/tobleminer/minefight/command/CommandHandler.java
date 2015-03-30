@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
-
+import net.canarymod.chat.MessageReceiver;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.command.module.CommandModule;
 import tobleminer.minefight.command.module.ModuleAdmin;
@@ -51,7 +50,7 @@ public class CommandHandler
 		return this.moduleByName.get(name);
 	}
 	
-	public boolean handleCommand(String[] args, CommandSender sender)
+	public boolean handleCommand(String[] args, MessageReceiver sender)
 	{
 		if(args.length >= 1)
 		{

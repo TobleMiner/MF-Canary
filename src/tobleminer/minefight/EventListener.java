@@ -1,30 +1,12 @@
 package tobleminer.minefight;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import net.canarymod.hook.HookHandler;
+import net.canarymod.hook.player.ItemDropHook;
+import net.canarymod.hook.system.ServerTickHook;
+import net.canarymod.plugin.PluginListener;
 
-public class EventListener implements Listener
+
+public class EventListener implements PluginListener
 {
 	final Main mane;
 	
@@ -33,91 +15,91 @@ public class EventListener implements Listener
 		this.mane = p;
 	}
 		
-	@EventHandler
+	@HookHandler
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
 		Main.gameEngine.playerInteract(event);
 	}
 	
-	@EventHandler
-	public void onPlayerDropItem(PlayerDropItemEvent event)
+	@HookHandler
+	public void onPlayerDropItem(ItemDropHook event)
 	{
 		Main.gameEngine.playerDroppedItem(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event)
 	{
 		Main.gameEngine.playerPickUpItem(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onItemDespawn(ItemDespawnEvent event)
 	{
 		Main.gameEngine.itemDespawn(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onEntityDamage(EntityDamageEvent event)
 	{
 		Main.gameEngine.entityDamage(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onEntityCombust(EntityCombustEvent event)
 	{
 		Main.gameEngine.entityCombust(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onPlayerDeath(PlayerDeathEvent event)
 	{
 		Main.gameEngine.playerDeath(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onPlayerChangedWorld(PlayerChangedWorldEvent event)
 	{
 		Main.gameEngine.playerChangedWorld(event.getPlayer(),event.getFrom());
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onPlayerQuit(PlayerQuitEvent event)
 	{
 		Main.gameEngine.playerQuit(event.getPlayer());
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onProjectileLaunch(ProjectileLaunchEvent event)
 	{
 		Main.gameEngine.projectileLaunched(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		event.setCancelled(Main.gameEngine.blockPlace(event));
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onBlockBreak(BlockBreakEvent event)
 	{
 		event.setCancelled(Main.gameEngine.blockBreak(event));
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onBlockDamage(BlockDamageEvent event)
 	{
 		event.setCancelled(Main.gameEngine.blockDamaged(event));
 	}
 		
-	@EventHandler
+	@HookHandler
 	public void onEntityChangeBlock(EntityChangeBlockEvent event)
 	{
 		event.setCancelled(Main.gameEngine.entityChangeBlock(event));
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
 	{
 		Main.gameEngine.entityDamageByEntity(event);
@@ -125,39 +107,45 @@ public class EventListener implements Listener
 			event.setDamage(0d);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
 		event.setRespawnLocation(Main.gameEngine.playerRespawn(event.getPlayer(),event.getRespawnLocation()));
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onProjectileHit(ProjectileHitEvent event)
 	{
 		Main.gameEngine.projectileHit(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onAsyncPlayerChat(AsyncPlayerChatEvent apce)
 	{
 		Main.gameEngine.playerChat(apce);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event)
 	{
 		Main.gameEngine.foodLevelChange(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onEntityExplode(EntityExplodeEvent event)
 	{
 		Main.gameEngine.entityExplosion(event);
 	}
 	
-	@EventHandler
+	@HookHandler
 	public void onBlockBurn(BlockBurnEvent event)
 	{
 		Main.gameEngine.blockBurn(event);
+	}
+	
+	@HookHandler
+	public void onTick(ServerTickHook event)
+	{
+		Main.gameEngine.doUpdate();
 	}
 }

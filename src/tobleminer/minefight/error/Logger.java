@@ -1,21 +1,23 @@
 package tobleminer.minefight.error;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import net.canarymod.logger.Logman;
+import net.canarymod.plugin.Plugin;
 
 public class Logger 
 {
 	private final String prefix;
+	private final Logman logger;
 	
 	public Logger(Plugin p)
 	{
 		prefix = p.getName();
+		this.logger = p.getLogman();
 	}
 	
 	public void log(Level lev, String str)
 	{
-		Bukkit.getServer().getLogger().log(lev,"["+prefix+"] "+str);
+		this.logger.log(lev,"["+prefix+"] "+str);
 	}
 }

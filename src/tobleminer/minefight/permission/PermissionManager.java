@@ -1,6 +1,6 @@
 package tobleminer.minefight.permission;
 
-import org.bukkit.entity.Player;
+import net.canarymod.api.entity.living.humanoid.Player;
 
 public class PermissionManager 
 {

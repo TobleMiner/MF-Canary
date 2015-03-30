@@ -6,25 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.server.v1_6_R3.Packet60Explosion;
-import net.minecraft.server.v1_6_R3.Vec3D;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_6_R3.entity.CraftPlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.map.MapRenderer;
-import org.bukkit.map.MapView;
-import org.bukkit.map.MapView.Scale;
-import org.bukkit.util.Vector;
-
+import net.canarymod.api.entity.living.humanoid.Player;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.config.container.Killstreak;
 import tobleminer.minefight.config.weapon.WeaponDescriptor;

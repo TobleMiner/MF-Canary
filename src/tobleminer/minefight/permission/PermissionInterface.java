@@ -1,20 +1,16 @@
 package tobleminer.minefight.permission;
 
-import java.util.logging.Level;
+import org.apache.logging.log4j.Level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
-
-import ru.tehkode.permissions.bukkit.PermissionsEx;
+import net.canarymod.Canary;
+import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.plugin.PluginManager;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.debug.Debugger;
 import tobleminer.minefight.error.Error;
 import tobleminer.minefight.error.ErrorReporter;
 import tobleminer.minefight.error.ErrorSeverity;
 import tobleminer.minefight.permission.interfaces.PermissionInterfaceFallbackMode;
-import tobleminer.minefight.permission.interfaces.PermissionInterfacePEx;
-import tobleminer.minefight.permission.interfaces.PermissionInterfaceVault;
 
 public abstract class PermissionInterface 
 {
@@ -24,23 +20,21 @@ public abstract class PermissionInterface
 	{
 		PermissionPlugin pp = PermissionPlugin.NONE;
 		PermissionInterface pi = null;
-		PluginManager pm = Bukkit.getServer().getPluginManager();
+		PluginManager pm =  Canary.pluginManager();
 		if(pm.getPlugin("Vault") != null)
 		{
 			pp = PermissionPlugin.VAULT;
-			pi = new PermissionInterfaceVault();
-			Main.logger.log(Level.INFO,Main.gameEngine.dict.get("vaultApproval"));
+			Main.logger.log(Level.INFO, Main.gameEngine.dict.get("vaultApproval"));
 		}
 		else if(pm.getPlugin("PermissionsEx") != null)
 		{
 			pp = PermissionPlugin.PEX;
-			pi = new PermissionInterfacePEx((PermissionsEx)pm.getPlugin("PermissionsEx"));
 		}
 		else
 		{
 			pp = PermissionPlugin.OPONLYFALLBACK;
 			pi = new PermissionInterfaceFallbackMode();
-			Error err = new Error("No supported permission plugin found!","You have neither PermissionsEx nor Vault installed! Going into op-only permission fallback mode!","Please install Vault!",PermissionInterface.class.getName(),ErrorSeverity.WARNING);
+			Error err = new Error("No supported permission plugin found!" ,"You have neither PermissionsEx nor Vault installed! Going into op-only permission fallback mode!", "Please install Vault!", PermissionInterface.class.getName(),ErrorSeverity.WARNING);
 			ErrorReporter.reportError(err);
 		}
 		Debugger.writeDebugOut("Permissioninterface: "+pp.toString()) ;

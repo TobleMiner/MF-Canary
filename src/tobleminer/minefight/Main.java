@@ -3,13 +3,13 @@ package tobleminer.minefight;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.apache.logging.log4j.Level;
 
+import net.canarymod.Canary;
+import net.canarymod.chat.MessageReceiver;
+import net.canarymod.commandsys.Command;
+import net.canarymod.plugin.Plugin;
 import tobleminer.minefight.command.CommandHandler;
 import tobleminer.minefight.engine.GameEngine;
 import tobleminer.minefight.engine.match.statistics.beans.PlayerStatBean;
@@ -22,7 +22,7 @@ import tobleminer.minefight.network.ProtocolLibSafeLoader;
 import tobleminer.minefight.permission.PermissionManager;
 import tobleminer.minefight.util.Util;
 
-public class Main extends JavaPlugin
+public class Main extends Plugin
 {
 	private final EventListener eventListener = new EventListener(this);
 	public static Main main;
@@ -31,9 +31,7 @@ public class Main extends JavaPlugin
 	public static Logger logger;
 	public static Util util;
 	public static CommandHandler cmdhandler;
-	
-	private final GlobalTimer gtimer = new GlobalTimer();
-	
+		
 	public Main()
 	{
 		Main.main = this;
@@ -42,10 +40,11 @@ public class Main extends JavaPlugin
 	public static GameEngine gameEngine;
 	
 	@Override
-	public void onEnable()
+	public boolean enable()
 	{
 		init();
-		logger.log(Level.INFO,gameEngine.dict.get("onEnable"));
+		logger.log(Level.INFO, gameEngine.dict.get("onEnable"));
+		return true;
 	}
 	
 	public void init()
@@ -55,7 +54,7 @@ public class Main extends JavaPlugin
 		Main.gameEngine = new GameEngine(this);
 		Main.gameEngine.init();
 		logger.log(Level.INFO,gameEngine.dict.get("preEnable"));
-		Bukkit.getPluginManager().registerEvents(eventListener, this);
+		Canary.hooks().registerListener(eventListener, this);
 		if(!(new LicenseHandler().init(this)))
 		{
 			Error err = new Error("License check failed!","The plugins license could not be copied into the plugin's folder!", "The plugin won't start until the license is copied.", this.getClass().getName(), ErrorSeverity.DOUBLERAINBOOM);
@@ -63,13 +62,12 @@ public class Main extends JavaPlugin
 			return;
 		}
 		Main.pm = new PermissionManager();
-		Main.plsl = new ProtocolLibSafeLoader(this);
+		//Main.plsl = new ProtocolLibSafeLoader(this);
 		Main.cmdhandler = new CommandHandler(this);
-		this.gtimer.runTaskTimer(this, 1, 1);
 	}
 	
 	@Override
-	public void onDisable()
+	public void disable()
 	{
 		this.gtimer.cancel();
 		gameEngine.isExiting = true;
@@ -77,8 +75,11 @@ public class Main extends JavaPlugin
 		Main.gameEngine.endAllMatches();
 	}
 		
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String args[])
+	@Command(	aliases = { "mpvp" },
+				description = "Control command for MineFight. Try /mpvp help to learn more",
+				permissions = { "minefight.user" },
+				toolTip = "/mpvp [args]")
+	public boolean onCommand(MessageReceiver sender, String args[])
 	{
 		return cmdhandler.handleCommand(args, sender);
 	}

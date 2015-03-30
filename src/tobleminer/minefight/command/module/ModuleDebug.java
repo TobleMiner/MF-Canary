@@ -1,10 +1,9 @@
 package tobleminer.minefight.command.module;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
+import net.canarymod.Canary;
+import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.chat.ChatFormat;
+import net.canarymod.chat.MessageReceiver;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.command.CommandHelp;
 import tobleminer.minefight.engine.match.Match;
@@ -14,7 +13,7 @@ import tobleminer.minefight.permission.Permission;
 
 public class ModuleDebug extends CommandModule
 {
-	public boolean handleCommand(String[] args, CommandSender sender)
+	public boolean handleCommand(String[] args, MessageReceiver sender)
 	{
 		if(!Main.gameEngine.configuration.isDebuging())
 		{
@@ -31,7 +30,7 @@ public class ModuleDebug extends CommandModule
 					pname = p.getName();
 					if(!Main.cmdhandler.pm.hasPlayerPermission(p, Permission.MPVP_DEBUG))
 					{
-						p.sendMessage(this.noPermMsg);
+						p.message(this.noPermMsg);
 						return true;
 					}
 				}
@@ -41,9 +40,9 @@ public class ModuleDebug extends CommandModule
 				}
 				if(pname == null)
 				{
-					sender.sendMessage(ChatColor.RED+Main.gameEngine.dict.get("statsNameConsole"));
+					sender.sendMessage(ChatFormat.LIGHT_RED + Main.gameEngine.dict.get("statsNameConsole"));
 				}
-				Player p = Bukkit.getPlayer(pname);
+				Player p = Canary.getServer().getPlayer(pname);
 				if(p != null)
 				{
 					Match m = Main.gameEngine.getMatch(p.getWorld());

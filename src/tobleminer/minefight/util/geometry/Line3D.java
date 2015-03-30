@@ -1,23 +1,24 @@
 package tobleminer.minefight.util.geometry;
 
-import org.bukkit.Location;
-import org.bukkit.util.Vector;
+import tobleminer.minefight.util.location.Vector;
+import net.canarymod.api.world.position.Location;
+import net.canarymod.api.world.position.Vector3D;
 
 public class Line3D 
 {
 	private final Location pos1; //Defined by two positions on the line
 	private final Location pos2;
 	
-	public Line3D(Location loc, Vector vec)
+	public Line3D(Location loc, Vector3D vec)
 	{
-		this.pos1 = loc.clone();
-		this.pos2 = loc.clone().clone().add(vec);
+		this.pos1 = loc.copy();
+		this.pos2 = (Location)loc.copy().add(vec);
 	}
 	
 	public Line3D(Location pos1, Location pos2)
 	{
-		this.pos1 = pos1.clone();
-		this.pos2 = pos2.clone();
+		this.pos1 = pos1.copy();
+		this.pos2 = pos2.copy();
 	}
 	
 	public double getSmallestDist(Location loc)
@@ -27,31 +28,31 @@ public class Line3D
 	
 	public double getSmallestDist(Location loc, boolean limit)
 	{
-		Vector v = this.pos2.clone().subtract(this.pos1).toVector();
-		Vector w = loc.clone().subtract(this.pos1).toVector();
+		Vector v = new Vector(this.pos2.copy().subtract(this.pos1));
+		Vector w = new Vector(loc.copy().subtract(this.pos1));
 		double c1 = v.dot(w);
 		double c2 = v.dot(v);
 		if (c1 <= 0 && limit)
-			return loc.distance(this.pos1);
+			return loc.getDistance(this.pos1);
         if (c2 <= c1 && limit)
-        	return loc.distance(this.pos2);
+        	return loc.getDistance(this.pos2);
         double b = c1 / c2;
-        Location Pb = this.pos1.clone().add(v.clone().multiply(b));
-        return loc.distance(Pb);	
+        Location Pb = (Location)this.pos1.copy().add(v.copy().multiply(b));
+        return loc.getDistance(Pb);	
 	}
 	
-	public Vector getDirVec()
+	public Vector3D getDirVec()
 	{
-		return this.pos1.clone().subtract(this.pos2).toVector();
+		return this.pos1.copy().subtract(this.pos2);
 	}
 	
 	public Location getPos1()
 	{
-		return this.pos1.clone();
+		return this.pos1.copy();
 	}
 
 	public Location getPos2()
 	{
-		return this.pos2.clone();
+		return this.pos2.copy();
 	}
 }

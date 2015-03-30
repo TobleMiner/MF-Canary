@@ -1,7 +1,5 @@
 package tobleminer.minefight.util.location;
 
-import org.bukkit.util.Vector;
-
 public class FacingUtil 
 {	
 	public static Vector getOffsetByFacing(int facing)

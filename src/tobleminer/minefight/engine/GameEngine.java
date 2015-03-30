@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
+import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
 import net.canarymod.hook.player.ItemDropHook;
 import tobleminer.minefight.Main;

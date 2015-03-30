@@ -2,9 +2,8 @@ package tobleminer.minefight.util.protection;
 
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-
+import net.canarymod.api.world.blocks.Block;
+import net.canarymod.api.world.position.Location;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.util.geometry.Area3D;
 

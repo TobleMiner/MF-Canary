@@ -1,31 +1,31 @@
 package tobleminer.minefight.util.material;
 
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
+import net.canarymod.api.DyeColor;
+import net.canarymod.chat.ChatFormat;
 
 public class ColorUtil 
 {
-	public static DyeColor ChatColorToDyeColor(ChatColor col)
+	public static DyeColor ChatColorToDyeColor(ChatFormat col)
 	{
-		if(col == ChatColor.AQUA)
+		if(col == ChatFormat.AQUA)
 			return DyeColor.LIGHT_BLUE;
-		if(col == ChatColor.BLUE || col == ChatColor.DARK_BLUE)
+		if(col == ChatFormat.DARK_BLUE || col == ChatFormat.BLUE)
 			return DyeColor.BLUE;
-		if(col == ChatColor.GREEN)
+		if(col == ChatFormat.GREEN)
 			return DyeColor.LIME;
-		if(col == ChatColor.DARK_GREEN)
+		if(col == ChatFormat.DARK_GREEN)
 			return DyeColor.GREEN;
-		if(col == ChatColor.RED || col == ChatColor.DARK_RED)
+		if(col == ChatFormat.RED || col == ChatFormat.DARK_RED)
 			return DyeColor.RED;
-		if(col == ChatColor.BLACK)
+		if(col == ChatFormat.BLACK)
 			return DyeColor.BLACK;
-		if(col == ChatColor.GRAY || col == ChatColor.DARK_GRAY)
+		if(col == ChatFormat.GRAY || col == ChatFormat.DARK_GRAY)
 			return DyeColor.GRAY;
-		if(col == ChatColor.GOLD || col == ChatColor.YELLOW)
+		if(col == ChatFormat.GOLD || col == ChatFormat.YELLOW)
 			return DyeColor.YELLOW;
-		if(col == ChatColor.LIGHT_PURPLE)
+		if(col == ChatFormat.LIGHT_PURPLE)
 			return DyeColor.MAGENTA;
-		if(col == ChatColor.DARK_PURPLE)
+		if(col == ChatFormat.DARK_PURPLE)
 			return DyeColor.PURPLE;
 		return DyeColor.PINK;
 	}

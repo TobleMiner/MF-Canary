@@ -2,12 +2,11 @@ package tobleminer.minefight.util.geometry;
 
 import java.util.Random;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.util.Vector;
-
+import net.canarymod.api.entity.Entity;
+import net.canarymod.api.world.World;
+import net.canarymod.api.world.blocks.Block;
+import net.canarymod.api.world.position.Location;
+import net.canarymod.api.world.position.Vector3D;
 import tobleminer.minefight.error.Error;
 import tobleminer.minefight.error.ErrorReporter;
 import tobleminer.minefight.error.ErrorSeverity;
@@ -22,8 +21,8 @@ public class Area3D
 	private double pos2Z;
 	private World world;
 	private final Entity entity;
-	private final Vector vec1;
-	private final Vector vec2;
+	private final Vector3D vec1;
+	private final Vector3D vec2;
 	
 	private final Random rand = new Random();
 	
@@ -49,7 +48,7 @@ public class Area3D
 		}
 	}
 	
-	public Area3D(Entity ent, Vector vec1, Vector vec2)
+	public Area3D(Entity ent, Vector3D vec1, Vector3D vec2)
 	{
 		this.entity = ent;
 		this.vec1 = vec1;
@@ -104,11 +103,11 @@ public class Area3D
 		double pos2Z = this.pos2Z;
 		if(this.entity != null)
 		{
-			Location entBound1 = this.entity.getLocation().clone().add(this.vec1);
+			Location entBound1 = (Location)this.entity.getLocation().copy().add(this.vec1);
 			pos1X = entBound1.getX();
 			pos1Y = entBound1.getY();
 			pos1Z = entBound1.getZ();
-			Location entBound2 = this.entity.getLocation().clone().add(this.vec2);
+			Location entBound2 = (Location)this.entity.getLocation().copy().add(this.vec2);
 			pos2X = entBound2.getX();
 			pos2Y = entBound2.getY();
 			pos2Z = entBound2.getZ();
@@ -137,11 +136,11 @@ public class Area3D
 		World world = this.world;
 		if(this.entity != null)
 		{
-			Location entBound1 = this.entity.getLocation().clone().add(this.vec1);
+			Location entBound1 = (Location)this.entity.getLocation().copy().add(this.vec1);
 			pos1X = entBound1.getX();
 			pos1Y = entBound1.getY();
 			pos1Z = entBound1.getZ();
-			Location entBound2 = this.entity.getLocation().clone().add(this.vec2);
+			Location entBound2 = (Location)this.entity.getLocation().copy().add(this.vec2);
 			pos2X = entBound2.getX();
 			pos2Y = entBound2.getY();
 			pos2Z = entBound2.getZ();
@@ -150,7 +149,7 @@ public class Area3D
 		double x = pos1X + (pos2X - pos1X) * rand.nextDouble();
 		double y = pos1Y + (pos2Y - pos1Y) * rand.nextDouble();
 		double z = pos1Z + (pos2Z - pos1Z) * rand.nextDouble();
-		return new Location(world, x, y, z);
+		return new Location(world, x, y, z, 0, 0);
 	}
 	
 	@Override
@@ -165,11 +164,11 @@ public class Area3D
 		World world = this.world;
 		if(this.entity != null)
 		{
-			Location entBound1 = this.entity.getLocation().clone().add(this.vec1);
+			Location entBound1 = (Location)this.entity.getLocation().copy().add(this.vec1);
 			pos1X = entBound1.getX();
 			pos1Y = entBound1.getY();
 			pos1Z = entBound1.getZ();
-			Location entBound2 = this.entity.getLocation().clone().add(this.vec2);
+			Location entBound2 = (Location)this.entity.getLocation().copy().add(this.vec2);
 			pos2X = entBound2.getX();
 			pos2Y = entBound2.getY();
 			pos2Z = entBound2.getZ();

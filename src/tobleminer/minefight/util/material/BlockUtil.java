@@ -3,10 +3,10 @@ package tobleminer.minefight.util.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.util.Vector;
+import net.canarymod.api.world.blocks.Block;
+import net.canarymod.api.world.blocks.BlockType;
+import net.canarymod.api.world.position.Location;
+import tobleminer.minefight.util.location.Vector;
 
 public class BlockUtil 
 {
@@ -25,12 +25,13 @@ public class BlockUtil
 	{
 		for(Vector vect : this.igniteVects)
 		{
-			Location loc = b.getLocation().clone().add(vect);
-			if(loc.getBlock() != null)
+			Location loc = (Location)b.getLocation().copy().add(vect);
+			Block fire = b.getWorld().getBlockAt(loc);
+			if(fire != null) 
 			{
-				if(loc.getBlock().getType().equals(Material.AIR))
+				if(fire.getType().equals(BlockType.Air))
 				{
-					loc.getBlock().setType(Material.FIRE);
+					fire.setType(BlockType.FireBlock);
 					return true;
 				}
 			}

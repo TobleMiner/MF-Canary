@@ -3,9 +3,9 @@ package tobleminer.minefight.util.location;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import net.canarymod.api.world.World;
+import net.canarymod.api.world.blocks.BlockType;
+import net.canarymod.api.world.position.Location;
 
 public class TeleportUtil
 {
@@ -22,15 +22,15 @@ public class TeleportUtil
 	public static Location getSafeTeleportLocation(World w, int x, int z, int searchBeginY)
 	{
 		
-		for(;searchBeginY>=0;searchBeginY--)
+		for(; searchBeginY>=0; searchBeginY--)
 		{
-			if(!w.getBlockAt(x, searchBeginY, z).getType().equals(Material.AIR))
+			if(!w.getBlockAt(x, searchBeginY, z).getType().equals(BlockType.Air))
 			{
 				searchBeginY += 2;
 				break;
 			}
 		}
-		return new Location(w, x, searchBeginY, z);
+		return new Location(w, x, searchBeginY, z, 0, 0);
 	}
 
 	public static List<Location> getSafeTeleportLocations(Location loc, boolean sky)
@@ -49,13 +49,13 @@ public class TeleportUtil
 		int initialY = searchBeginY;
 		int freespacesize = 0;
 		List<Location> safeLocs = new ArrayList<Location>();
-		for(;searchBeginY>=0;searchBeginY--)
+		for(; searchBeginY>=0; searchBeginY--)
 		{
-			if(!w.getBlockAt(x, searchBeginY, z).getType().equals(Material.AIR))
+			if(!w.getBlockAt(x, searchBeginY, z).getType().equals(BlockType.Air))
 			{
 				if(freespacesize > 2 && (sky || freespacesize >= initialY - searchBeginY))
 				{
-					safeLocs.add(new Location(w, x, searchBeginY+1, z));
+					safeLocs.add(new Location(w, x, searchBeginY+1, z, 0, 0));
 				}
 				freespacesize = 0;
 			}

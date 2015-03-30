@@ -8,6 +8,7 @@ import java.util.Random;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
+import net.canarymod.api.world.position.Location;
 import net.canarymod.hook.player.ItemDropHook;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.config.container.FlagContainer;
@@ -173,9 +174,9 @@ public class Match
 	{
 		if(Main.gameEngine.getPlayerExact(p) != null)
 		{
-			return ChatColor.DARK_RED+Main.gameEngine.dict.get("alreadyJoined");
+			return ChatColor.DARK_RED + Main.gameEngine.dict.get("alreadyJoined");
 		}
-		this.sendTeamMessage(null, ChatColor.GOLD+String.format(Main.gameEngine.dict.get("joinMsg"),p.getName()));
+		this.sendTeamMessage(null, ChatColor.GOLD + String.format(Main.gameEngine.dict.get("joinMsg"),p.getName()));
 		int membersRed = playersRed.size();
 		int membersBlue = playersBlue.size();
 		Random rand = new Random();
@@ -578,12 +579,12 @@ public class Match
 		for(int i=0;i<playersRed.size();i++)
 		{
 			PVPPlayer player = playersRed.get(i);
-			player.thePlayer.sendMessage(message);
+			player.thePlayer.message(message);
 		}
 		for(int i=0;i<playersBlue.size();i++)
 		{
 			PVPPlayer player = playersBlue.get(i);
-			player.thePlayer.sendMessage(message);
+			player.thePlayer.message(message);
 		}		
 	}
 
@@ -629,14 +630,14 @@ public class Match
 		for(int i=0;i<playersRed.size();i++)
 		{
 			PVPPlayer p = playersRed.get(i);
-			p.thePlayer.sendMessage(ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
+			p.thePlayer.message(ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
 			p.leaveMatch(matchLeaveLoc);
 			
 		}
 		for(int i=0;i<playersBlue.size();i++)
 		{
 			PVPPlayer p = playersBlue.get(i);
-			p.thePlayer.sendMessage(ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
+			p.thePlayer.message(ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
 			p.leaveMatch(matchLeaveLoc);
 		}
 		if(this.canEnvironmentBeDamaged() || this.canExplosionsDamageEnvironment())
@@ -738,10 +739,10 @@ public class Match
 			{
 				if(player.getCombatClass() == null)
 				{
-					player.thePlayer.sendMessage(ChatColor.DARK_RED + Main.gameEngine.dict.get("pickclass"));
+					player.thePlayer.message(ChatColor.DARK_RED + Main.gameEngine.dict.get("pickclass"));
 					return;
 				}
-				player.thePlayer.sendMessage(ChatColor.GOLD + String.format(Main.gameEngine.dict.get("spawnmsg"),player.getTeam().color+player.getTeam().getName().toUpperCase()+ChatColor.RESET));
+				player.thePlayer.message(ChatColor.GOLD + String.format(Main.gameEngine.dict.get("spawnmsg"),player.getTeam().color+player.getTeam().getName().toUpperCase()+ChatColor.RESET));
 				this.spawnPlayer(player);
 			}
 			else
@@ -783,7 +784,7 @@ public class Match
 			}
 		}
 		player.thePlayer.updateInventory(); //Seems NOT to work without updateInventory
-		player.thePlayer.sendMessage(String.format(ChatColor.DARK_GREEN+Main.gameEngine.dict.get("classchange"),name));
+		player.thePlayer.message(String.format(ChatColor.DARK_GREEN+Main.gameEngine.dict.get("classchange"),name));
 		player.setCombatClass(cc);
 	}
 	
@@ -963,7 +964,7 @@ public class Match
 			Block b = event.getBlock();
 			if(gmode.equals(Gamemode.Rush) && (b.getType().equals(Material.REDSTONE_TORCH_ON) || b.getType().equals(Material.REDSTONE_TORCH_OFF)))
 			{
-				if(activeRadioStation != null && activeRadioStation.getLocation().distance(b.getLocation()) < 3d)
+				if(activeRadioStation != null && activeRadioStation.getLocation().getDistance(b.getLocation()) < 3d)
 				{
 					if(player.getTeam() == this.teamRed)
 					{
@@ -1096,14 +1097,14 @@ public class Match
 		{
 			for(PVPPlayer p : this.playersRed)
 			{
-				p.thePlayer.sendMessage(message);
+				p.thePlayer.message(message);
 			}			
 		}
 		if(team != teamRed)
 		{
 			for(PVPPlayer p : this.playersBlue)
 			{
-				p.thePlayer.sendMessage(message);
+				p.thePlayer.message(message);
 			}
 		}
 	}
@@ -1149,12 +1150,12 @@ public class Match
 							}
 							if(sp.isCritical)
 							{
-								attacker.thePlayer.sendMessage(ChatColor.GOLD+Main.gameEngine.dict.get("crit")+"!");
+								attacker.thePlayer.message(ChatColor.GOLD+Main.gameEngine.dict.get("crit")+"!");
 								multi *= Main.gameEngine.configuration.getCritMultiplier(world, gmode);
 							}
 							if(hitzone == HitZone.HEAD)
 							{
-								attacker.thePlayer.sendMessage(ChatColor.GOLD+Main.gameEngine.dict.get("headshot")+"!");
+								attacker.thePlayer.message(ChatColor.GOLD+Main.gameEngine.dict.get("headshot")+"!");
 							}
 							player.normalDeathBlocked = true;
 							player.thePlayer.damage((float)Math.round(sp.getDmg(damage, hitzone, player.thePlayer.getLocation()) * multi * player.thePlayer.getMaxHealth()));
@@ -1222,7 +1223,7 @@ public class Match
 		List<PVPPlayer> players = this.getPlayers();
 		for(PVPPlayer p : players)
 		{
-			if(p.thePlayer.getLocation().distance(loc) <= dist && p.isSpawned())
+			if(p.thePlayer.getLocation().getDistance(loc) <= dist && p.isSpawned())
 			{
 				nearPlayers.add(p);
 			}
@@ -1281,7 +1282,7 @@ public class Match
 			Block b = event.getBlock();
 			if(gmode.equals(Gamemode.Rush) && (b.getType().equals(Material.REDSTONE_TORCH_ON) || b.getType().equals(Material.REDSTONE_TORCH_OFF)))
 			{
-				if(activeRadioStation != null && activeRadioStation.getLocation().distance(b.getLocation()) < 3d)
+				if(activeRadioStation != null && activeRadioStation.getLocation().getDistance(b.getLocation()) < 3d)
 				{
 					if(player.getTeam() == this.teamBlue)
 					{
@@ -1413,7 +1414,7 @@ public class Match
 			{
 				if(this.canKill(issuer, p, true) || issuer == p) //explosions always damage their creator
 				{
-					double dist = loc.distance(p.thePlayer.getLocation());
+					double dist = loc.getDistance(p.thePlayer.getLocation());
 					double radius = 1.24d*exploStr;
 					if(dist < radius)
 					{
@@ -1569,7 +1570,7 @@ public class Match
 			Block b = event.getBlock();
 			if(gmode.equals(Gamemode.Rush) && (b.getType().equals(Material.REDSTONE_TORCH_ON) || b.getType().equals(Material.REDSTONE_TORCH_OFF)))
 			{
-				if(activeRadioStation != null && activeRadioStation.getLocation().distance(b.getLocation()) < 3d)
+				if(activeRadioStation != null && activeRadioStation.getLocation().getDistance(b.getLocation()) < 3d)
 				{
 					if(player.getTeam() == this.teamBlue)
 					{
@@ -1599,7 +1600,7 @@ public class Match
 				Block b = event.getBlock();
 				if(gmode.equals(Gamemode.Rush) && (b.getType().equals(Material.REDSTONE_TORCH_ON) || b.getType().equals(Material.REDSTONE_TORCH_OFF)))
 				{
-					if(activeRadioStation != null && activeRadioStation.getLocation().distance(b.getLocation()) < 3d)
+					if(activeRadioStation != null && activeRadioStation.getLocation().getDistance(b.getLocation()) < 3d)
 					{
 						if(player.getTeam() == this.teamBlue)
 						{

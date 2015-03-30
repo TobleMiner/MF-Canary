@@ -3,7 +3,7 @@ package tobleminer.minefight.engine.player.combatclass;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.inventory.ItemStack;
+import tobleminer.minefight.util.item.ItemStack;
 
 public class CombatClass 
 {

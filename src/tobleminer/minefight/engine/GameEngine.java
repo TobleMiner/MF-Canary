@@ -7,6 +7,7 @@ import java.util.logging.Level;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.hook.player.ItemDropHook;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.api.MineFightAPI;
@@ -292,7 +293,7 @@ public class GameEngine
 		}
 		else
 		{
-			return ChatColor.DARK_RED+String.format(Main.gameEngine.dict.get("noMatch"),s);
+			return ChatFormat.DARK_RED + String.format(Main.gameEngine.dict.get("noMatch"), s);
 		}
 	}
 

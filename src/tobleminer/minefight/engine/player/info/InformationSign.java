@@ -1,7 +1,7 @@
 package tobleminer.minefight.engine.player.info;
 
-import org.bukkit.block.Sign;
-
+import net.canarymod.Canary;
+import net.canarymod.api.world.blocks.Sign;
 import tobleminer.minefight.engine.match.Match;
 
 public class InformationSign
@@ -23,12 +23,12 @@ public class InformationSign
 			timer = 0;
 			String[] lines = match.getInformationSignText();
 			int i=0;
-			for(String line:lines)  //TODO: Multi sign support
+			for(String line : lines)  //TODO: Multi sign support
 			{
-				sign.setLine(i,line);
+				sign.setComponentOnLine(Canary.factory().getChatComponentFactory().compileChatComponent(line), i);
 				i++;
 			}
-			sign.update(true);
+			sign.getBlock().update();
 		}
 		timer++;
 	}

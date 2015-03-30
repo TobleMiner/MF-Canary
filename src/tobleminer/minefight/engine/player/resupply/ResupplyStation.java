@@ -3,15 +3,10 @@ package tobleminer.minefight.engine.player.resupply;
 import java.util.Collection;
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.MaterialData;
-
+import net.canarymod.api.inventory.PlayerInventory;
+import net.canarymod.api.world.blocks.Block;
+import net.canarymod.api.world.blocks.Sign;
+import net.canarymod.api.world.position.Location;
 import tobleminer.minefight.engine.GameEngine;
 import tobleminer.minefight.engine.match.Match;
 import tobleminer.minefight.engine.player.PVPPlayer;

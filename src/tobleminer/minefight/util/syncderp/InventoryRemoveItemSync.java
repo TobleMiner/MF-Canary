@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import net.canarymod.api.inventory.Inventory;
 import net.canarymod.api.inventory.Item;
+import net.canarymod.api.inventory.ItemType;
 import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.ServerTaskManager;
 import net.canarymod.tasks.TaskOwner;
@@ -11,7 +12,8 @@ import net.canarymod.tasks.TaskOwner;
 public class InventoryRemoveItemSync extends ServerTask
 {
 	private final Callback callback;
-	private Item item;
+	private ItemType type;
+	private int amount;
 	private Inventory inventory;
 	
 	private UUID uuid;
@@ -29,13 +31,14 @@ public class InventoryRemoveItemSync extends ServerTask
 	
 	public interface Callback
 	{
-		public void onItemRemoved(Item item, UUID uuid);
+		public void onItemRemoved(UUID uuid);
 	}
 	
-	public UUID prepare(Inventory inventory, Item item)
+	public UUID prepare(Inventory inventory, ItemType type, int amount)
 	{
 		this.inventory = inventory;
-		this.item = item;
+		this.type = type;
+		this.amount = amount;
 		this.uuid = UUID.randomUUID();
 		ServerTaskManager.addTask(this);
 		return this.uuid;
@@ -44,8 +47,8 @@ public class InventoryRemoveItemSync extends ServerTask
 	@Override
 	public void run()
 	{
-		this.inventory.removeItem(this.item);
+		this.inventory.decreaseItemStackSize(this.type.getId(), this.amount, (short)this.type.getData());
 		if(this.callback != null)
-			this.callback.onItemRemoved(this.item, this.uuid);
+			this.callback.onItemRemoved(this.uuid);
 	}
 }

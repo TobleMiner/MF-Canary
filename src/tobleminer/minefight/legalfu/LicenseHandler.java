@@ -4,7 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
+
+import org.apache.logging.log4j.Level;
 
 import tobleminer.minefight.Main;
 import tobleminer.minefight.util.hashing.HashUtil;
@@ -27,7 +28,7 @@ public class LicenseHandler
 				br.close();
 				if(!HashUtil.hashMatchStringUTF8(licenseGood, licenseProbe))
 				{
-					Main.logger.log(Level.INFO,"LICENSE checksum missmatch. Replacing LICENSE file.");
+					Main.logger.log(Level.INFO, "LICENSE checksum missmatch. Replacing LICENSE file.");
 					license.delete();
 				}
 				else

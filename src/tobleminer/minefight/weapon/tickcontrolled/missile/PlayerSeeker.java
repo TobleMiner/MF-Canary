@@ -2,15 +2,14 @@ package tobleminer.minefight.weapon.tickcontrolled.missile;
 
 import java.util.List;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Arrow;
-import org.bukkit.util.Vector;
-
+import net.canarymod.api.entity.Arrow;
+import net.canarymod.api.world.position.Location;
 import tobleminer.minefight.config.Config;
 import tobleminer.minefight.config.container.PlayerSeekerContainer;
 import tobleminer.minefight.engine.GameEngine;
 import tobleminer.minefight.engine.match.Match;
 import tobleminer.minefight.engine.player.PVPPlayer;
+import tobleminer.minefight.util.location.Vector;
 
 public class PlayerSeeker extends Missile
 {
@@ -30,7 +29,7 @@ public class PlayerSeeker extends Missile
 	@Override
 	public void doUpdate() 
 	{
-		if(this.arr == null || this.arr.isDead() || !this.arr.isValid()) this.explode();
+		if(this.arr == null || this.arr.isDead()) this.explode();
 		PlayerSeekerContainer psc = this.cfg.getPlayerSeekerConf(this.match.getWorld(), this.match.gmode);
 		if(this.target == null)
 		{
@@ -61,19 +60,22 @@ public class PlayerSeeker extends Missile
 			}
 			if(state == 1)
 			{
-				dirTarget = this.target.thePlayer.getLocation().clone().subtract(this.arr.getLocation()).toVector();
-				if(dirTarget.length() < psc.threshold)
+				dirTarget = new Vector(this.target.thePlayer.getLocation().clone().subtract(this.arr.getLocation()));
+				if(dirTarget.getMagnitude() < psc.threshold)
 				{
 					state = 2;
 					this.explode();
 				}
 			}
-			Vector dirCurrent = this.arr.getVelocity().clone();
-			dirTarget = dirTarget.clone().multiply(this.speed/dirTarget.length());
-			Vector delta = dirTarget.clone().subtract(dirCurrent.clone());
-			Vector dirEff = dirCurrent.clone().add(delta.clone().multiply(Math.min(1d, delta.length()/(psc.maxAccel/GameEngine.tps))));
+			Vector dirCurrent = new Vector(this.arr.getMotion().copy());
+			dirTarget = new Vector(dirTarget.clone().multiply(this.speed / dirTarget.length()));
+			Vector delta = new Vector(dirTarget.clone().subtract(dirCurrent.clone()));
+			Vector dirEff = new Vector(dirCurrent.clone().add(delta.clone()
+					.multiply(Math.min(1d, delta.length() / (psc.maxAccel / GameEngine.tps)))));
 			Vector velocity = dirEff.clone();
-			this.arr.setVelocity(velocity);
+			this.arr.setMotionX(velocity.getX());
+			this.arr.setMotionY(velocity.getY());
+			this.arr.setMotionZ(velocity.getZ());
 		}
 	}
 	

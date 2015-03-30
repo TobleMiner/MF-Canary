@@ -2,6 +2,8 @@ package tobleminer.minefight.config.weapon;
 
 import java.util.HashMap;
 
+import net.canarymod.api.inventory.ItemType;
+
 import org.bukkit.Material;
 
 import tobleminer.minefight.config.weapon.WeaponDescriptor.DamageType;
@@ -10,7 +12,7 @@ import tobleminer.minefight.config.weapon.WeaponDescriptor.WeaponUseType;
 public class WeaponIndex 
 {
 	private HashMap<String, WeaponDescriptor> byName = new HashMap<String, WeaponDescriptor>();
-	private HashMap<Material, WeaponDescriptor> byMaterial = new HashMap<Material, WeaponDescriptor>();
+	private HashMap<ItemType, WeaponDescriptor> byMaterial = new HashMap<ItemType, WeaponDescriptor>();
 	private HashMap<WeaponUseType, WeaponIndex> byUseType = new HashMap<WeaponUseType, WeaponIndex>();
 	private HashMap<DamageType, WeaponIndex> byDmgType = new HashMap<DamageType, WeaponIndex>();
 	private int num = 0;
@@ -43,7 +45,7 @@ public class WeaponIndex
 		return this.byName.get(s);
 	}
 	
-	public WeaponDescriptor get(Material m)
+	public WeaponDescriptor get(ItemType m)
 	{
 		return this.byMaterial.get(m);
 	}

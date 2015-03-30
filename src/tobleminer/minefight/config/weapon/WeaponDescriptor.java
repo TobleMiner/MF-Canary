@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.Material;
+import net.canarymod.api.inventory.ItemType;
 
 import tobleminer.minefight.Main;
 import tobleminer.minefight.engine.player.PVPPlayer.HitZone;
@@ -17,15 +17,15 @@ public class WeaponDescriptor
 	public final double speed;
 	public final WeaponUseType wut;
 	public final DamageType dmgType;
-	public final Material material;
-	public final Material ammomat;
+	public final ItemType material;
+	public final ItemType ammomat;
 	public final short itemdmg;
 	public final int firemode;
 	public final HashMap<Double, Double> damage = new HashMap<Double, Double>();
 	public final HashMap<HitZone, Double> multipliers = new HashMap<HitZone, Double>();
 	public final double maxDist;
 	
-	public WeaponDescriptor(String name, boolean doTranslate, double cadence, double speed, String useType, String dmgType, Material material, short itemdmg, List<Entry<Double ,Double>> damage, List<Entry<HitZone ,Double>> multipliers, Material ammomat, int firemode)
+	public WeaponDescriptor(String name, boolean doTranslate, double cadence, double speed, String useType, String dmgType, ItemType material, short itemdmg, List<Entry<Double ,Double>> damage, List<Entry<HitZone ,Double>> multipliers, ItemType ammomat, int firemode)
 	{
 		this.name = name;
 		this.translate = doTranslate;

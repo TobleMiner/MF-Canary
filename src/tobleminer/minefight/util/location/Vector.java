@@ -34,4 +34,14 @@ public class Vector extends Vector3D
 	{
 		return this.x * v.getX() + this.y * v.getY() + this.z * v.getZ();
 	}
+	
+	public double length()
+	{
+		return this.getMagnitude();
+	}
+	
+	public Vector clone()
+	{
+		return new Vector(this.copy());
+	}
 }

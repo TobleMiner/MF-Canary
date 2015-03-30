@@ -1,10 +1,10 @@
 package tobleminer.minefight.weapon;
 
-import org.bukkit.Material;
-import org.bukkit.World;
+import net.canarymod.api.inventory.ItemType;
+import net.canarymod.api.world.World;
 
 public interface Weapon 
 {	
-	public abstract Material getMaterial(World w);
+	public abstract ItemType getMaterial(World w);
 	public abstract short getSubId(World w);
 }

@@ -1,10 +1,10 @@
 package tobleminer.minefight.weapon.tickcontrolled.missile;
 
-import org.bukkit.entity.Arrow;
-
+import net.canarymod.api.entity.Arrow;
+import tobleminer.minefight.Main;
 import tobleminer.minefight.engine.match.Match;
 import tobleminer.minefight.engine.player.PVPPlayer;
-import tobleminer.minefight.util.syncderp.EntitySyncCalls;
+import tobleminer.minefight.util.syncderp.RemoveEntitySync;
 import tobleminer.minefight.weapon.tickcontrolled.TickControlledWeapon;
 
 public abstract class Missile extends TickControlledWeapon
@@ -28,8 +28,8 @@ public abstract class Missile extends TickControlledWeapon
 	public void explode()
 	{
 		this.unregisterTickControlled();
-		match.rmMissile(this);
-		EntitySyncCalls.removeEntity(arr);
+		this.match.rmMissile(this);
+		new RemoveEntitySync(Main.main, 0, null).prepare(this.arr);
 	}
 	
 	public Arrow getProjectile()

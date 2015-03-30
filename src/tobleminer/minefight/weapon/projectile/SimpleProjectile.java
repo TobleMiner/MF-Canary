@@ -1,8 +1,7 @@
 package tobleminer.minefight.weapon.projectile;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Arrow;
-
+import net.canarymod.api.entity.Arrow;
+import net.canarymod.api.world.position.Location;
 import tobleminer.minefight.engine.player.PVPPlayer;
 import tobleminer.minefight.engine.player.PVPPlayer.HitZone;
 

@@ -1,8 +1,7 @@
 package tobleminer.minefight.weapon.projectile;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Arrow;
-
+import net.canarymod.api.entity.Arrow;
+import net.canarymod.api.world.position.Location;
 import tobleminer.minefight.engine.player.PVPPlayer;
 import tobleminer.minefight.engine.player.PVPPlayer.HitZone;
 
@@ -19,13 +18,13 @@ public abstract class Projectile
 		this.shooter = p;
 		this.proj = arr;
 		this.isCritical = crit;
-		this.startLoc = arr.getLocation().clone();
+		this.startLoc = arr.getLocation().copy();
 		this.wpName = wpName;
 	}
 	
 	public double getFlightDistance(Location loc)
 	{
-		return this.startLoc.distance(loc);
+		return this.startLoc.getDistance(loc);
 	}
 	
 	public String getWpName()

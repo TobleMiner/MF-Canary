@@ -6,9 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import net.canarymod.api.entity.Arrow;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.position.Location;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.hook.player.ItemDropHook;
 import tobleminer.minefight.Main;
 import tobleminer.minefight.config.container.FlagContainer;
@@ -40,10 +42,8 @@ import tobleminer.minefight.error.ErrorSeverity;
 import tobleminer.minefight.util.Util;
 import tobleminer.minefight.util.geometry.Area3D;
 import tobleminer.minefight.util.location.TeleportUtil;
+import tobleminer.minefight.util.location.Vector;
 import tobleminer.minefight.util.protection.ProtectionUtil;
-import tobleminer.minefight.util.syncderp.EffectSyncCalls;
-import tobleminer.minefight.util.syncderp.EntitySyncCalls;
-import tobleminer.minefight.util.syncderp.InventorySyncCalls;
 import tobleminer.minefight.weapon.projectile.Projectile;
 import tobleminer.minefight.weapon.projectile.SimpleProjectile;
 import tobleminer.minefight.weapon.projectile.WeaponProjectile;
@@ -88,7 +88,7 @@ public class Match
 	private final ProtectionUtil protection = new ProtectionUtil();
 	private final Spawnengine spawnengine;
 	public final List<Area3D> dangerZones = new ArrayList<>();
-	public final List<org.bukkit.entity.Projectile> allProjectiles = new ArrayList<>();
+	public final List<net.canarymod.api.entity.Projectile> allProjectiles = new ArrayList<>();
 	
 	public Match(World world, Gamemode gmode, String name, boolean hardcore, WeaponIndex weapons, List<Sign> infoSigns, List<FlagContainer> flags, List<RadioStationContainer> radioStations, StatHandler sh)
 	{
@@ -174,9 +174,9 @@ public class Match
 	{
 		if(Main.gameEngine.getPlayerExact(p) != null)
 		{
-			return ChatColor.DARK_RED + Main.gameEngine.dict.get("alreadyJoined");
+			return ChatFormat.DARK_RED + Main.gameEngine.dict.get("alreadyJoined");
 		}
-		this.sendTeamMessage(null, ChatColor.GOLD + String.format(Main.gameEngine.dict.get("joinMsg"),p.getName()));
+		this.sendTeamMessage(null, ChatFormat.GOLD + String.format(Main.gameEngine.dict.get("joinMsg"),p.getName()));
 		int membersRed = playersRed.size();
 		int membersBlue = playersBlue.size();
 		Random rand = new Random();
@@ -215,20 +215,20 @@ public class Match
 		{
 			Vector vecSouth = new Vector(0, 0, 1);
 			Vector vecDown = new Vector(0, -1, 0);
-			Vector vec = lookat.clone().subtract(loc).toVector();
+			Vector vec = new Vector(lookat.clone().subtract(loc));
 			loc.setPitch((float)-((vecDown.angle(vec) / Math.PI * 180d) - 90F));
-			loc.setYaw((float)(vecSouth.angle(vec) / Math.PI * 180d));
+			loc.setRotation((float)(vecSouth.angle(vec) / Math.PI * 180d));
 		}
-		p.teleport(loc);
+		p.teleportTo(loc);
 		Main.plsl.registerPlayer(p, player);
 		player.storeInventory();
 		Main.gameEngine.playerJoined(this, player);
-		return ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("persJoinMsg"), this.name);
+		return ChatFormat.DARK_GREEN+String.format(Main.gameEngine.dict.get("persJoinMsg"), this.name);
 	}
 	
 	public PVPPlayer getPlayerByName(String name)
 	{
-		for(int i=0;i<playersRed.size();i++)
+		for(int i=0; i < playersRed.size(); i++)
 		{
 			PVPPlayer p = playersRed.get(i);
 			if(p.getName().equals(name))
@@ -314,7 +314,7 @@ public class Match
 		player.thePlayer.getInventory().setLeggings(null);
 		player.thePlayer.getInventory().setBoots(null);
 		player.loadInventory();
-		this.sendTeamMessage(null,ChatColor.GOLD+String.format(Main.gameEngine.dict.get("matchLeaveBroad"),player.getName()));
+		this.sendTeamMessage(null,ChatFormat.GOLD+String.format(Main.gameEngine.dict.get("matchLeaveBroad"),player.getName()));
 		for(PVPPlayer watcher : this.getPlayers())
 		{
 			Main.plsl.sendNamechange(player, watcher, true);
@@ -552,13 +552,13 @@ public class Match
 				{
 					this.beaconInterv = Main.gameEngine.configuration.getInfoBeaconInterval(gmode, world);
 					timer = 0;
-					this.sendTeamMessage(null,ChatColor.GOLD+String.format("%s: %s",Main.gameEngine.dict.get("tickets"),teamRed.color+Integer.toString((int)Math.round(teamRed.getPoints()))+ChatColor.RESET+" | "+teamBlue.color+Integer.toString((int)Math.round(teamBlue.getPoints()))));
+					this.sendTeamMessage(null,ChatFormat.GOLD+String.format("%s: %s",Main.gameEngine.dict.get("tickets"),teamRed.color+Integer.toString((int)Math.round(teamRed.getPoints()))+ChatFormat.RESET+" | "+teamBlue.color+Integer.toString((int)Math.round(teamBlue.getPoints()))));
 					if(gmode.equals(Gamemode.Conquest))
 					{
-						this.sendTeamMessage(null,ChatColor.GOLD+String.format("%s: %s",Main.gameEngine.dict.get("Flags"),teamRed.color+Integer.toString(this.getFlagsRed())+ChatColor.RESET+" | "+teamBlue.color+Integer.toString(this.getFlagsBlue())));
+						this.sendTeamMessage(null,ChatFormat.GOLD+String.format("%s: %s",Main.gameEngine.dict.get("Flags"),teamRed.color+Integer.toString(this.getFlagsRed())+ChatFormat.RESET+" | "+teamBlue.color+Integer.toString(this.getFlagsBlue())));
 						if(this.getFlagNum() - this.getFlagsRed() - this.getFlagsBlue() > 0)
 						{
-							this.sendTeamMessage(null,ChatColor.GOLD+String.format(Main.gameEngine.dict.get("uncapped"),Integer.toString(this.getFlagNum() - this.getFlagsRed() - this.getFlagsBlue())));
+							this.sendTeamMessage(null,ChatFormat.GOLD+String.format(Main.gameEngine.dict.get("uncapped"),Integer.toString(this.getFlagNum() - this.getFlagsRed() - this.getFlagsBlue())));
 						}
 					}
 				}
@@ -630,14 +630,14 @@ public class Match
 		for(int i=0;i<playersRed.size();i++)
 		{
 			PVPPlayer p = playersRed.get(i);
-			p.thePlayer.message(ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
+			p.thePlayer.message(ChatFormat.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
 			p.leaveMatch(matchLeaveLoc);
 			
 		}
 		for(int i=0;i<playersBlue.size();i++)
 		{
 			PVPPlayer p = playersBlue.get(i);
-			p.thePlayer.message(ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
+			p.thePlayer.message(ChatFormat.DARK_GREEN+String.format(Main.gameEngine.dict.get("matchend"),p.getPoints()));
 			p.leaveMatch(matchLeaveLoc);
 		}
 		if(this.canEnvironmentBeDamaged() || this.canExplosionsDamageEnvironment())
@@ -739,10 +739,10 @@ public class Match
 			{
 				if(player.getCombatClass() == null)
 				{
-					player.thePlayer.message(ChatColor.DARK_RED + Main.gameEngine.dict.get("pickclass"));
+					player.thePlayer.message(ChatFormat.DARK_RED + Main.gameEngine.dict.get("pickclass"));
 					return;
 				}
-				player.thePlayer.message(ChatColor.GOLD + String.format(Main.gameEngine.dict.get("spawnmsg"),player.getTeam().color+player.getTeam().getName().toUpperCase()+ChatColor.RESET));
+				player.thePlayer.message(ChatFormat.GOLD + String.format(Main.gameEngine.dict.get("spawnmsg"),player.getTeam().color+player.getTeam().getName().toUpperCase()+ChatFormat.RESET));
 				this.spawnPlayer(player);
 			}
 			else
@@ -784,7 +784,7 @@ public class Match
 			}
 		}
 		player.thePlayer.updateInventory(); //Seems NOT to work without updateInventory
-		player.thePlayer.message(String.format(ChatColor.DARK_GREEN+Main.gameEngine.dict.get("classchange"),name));
+		player.thePlayer.message(String.format(ChatFormat.DARK_GREEN+Main.gameEngine.dict.get("classchange"),name));
 		player.setCombatClass(cc);
 	}
 	
@@ -1041,7 +1041,7 @@ public class Match
 	{
 		String[] info = new String[4];
 		info[0] = this.gmode.toString();
-		info[1] = ChatColor.RED+"RED"+ChatColor.RESET+"|"+ChatColor.BLUE+"BLUE";
+		info[1] = ChatFormat.RED+"RED"+ChatFormat.RESET+"|"+ChatFormat.BLUE+"BLUE";
 		info[2] = "Points:"+Integer.toString((int)Math.round(teamRed.getPoints()))+"|"+Integer.toString((int)Math.round(teamBlue.getPoints()));
 		info[3] = "Players: "+Integer.toString(playersRed.size())+" | "+Integer.toString(playersBlue.size());
 		return info;
@@ -1118,7 +1118,7 @@ public class Match
 			if(player.isSpawned())
 			{
 				HitZone hitzone = HitZone.TORSO;
-				double deltaY = p.getLocation().clone().add(0d, 2d, 0d).getY()-a.getLocation().getY();
+				double deltaY = p.getLocation().clone().add(new Vector(0d, 2d, 0d)).getY()-a.getLocation().getY();
 				double multi = 1d;
 				if(deltaY > (2d/3d)) //Legshot
 				{
@@ -1150,12 +1150,12 @@ public class Match
 							}
 							if(sp.isCritical)
 							{
-								attacker.thePlayer.message(ChatColor.GOLD+Main.gameEngine.dict.get("crit")+"!");
+								attacker.thePlayer.message(ChatFormat.GOLD+Main.gameEngine.dict.get("crit")+"!");
 								multi *= Main.gameEngine.configuration.getCritMultiplier(world, gmode);
 							}
 							if(hitzone == HitZone.HEAD)
 							{
-								attacker.thePlayer.message(ChatColor.GOLD+Main.gameEngine.dict.get("headshot")+"!");
+								attacker.thePlayer.message(ChatFormat.GOLD+Main.gameEngine.dict.get("headshot")+"!");
 							}
 							player.normalDeathBlocked = true;
 							player.thePlayer.damage((float)Math.round(sp.getDmg(damage, hitzone, player.thePlayer.getLocation()) * multi * player.thePlayer.getMaxHealth()));
@@ -1199,11 +1199,11 @@ public class Match
 		{
 			this.kill(player, player, "", player.thePlayer.getHealth() > 0);
 			this.setTeam(player,to);
-			return ChatColor.DARK_GREEN+String.format(Main.gameEngine.dict.get("playerChangeTeam"),to.color+to.getName().toUpperCase()+ChatColor.DARK_GREEN);
+			return ChatFormat.DARK_GREEN+String.format(Main.gameEngine.dict.get("playerChangeTeam"),to.color+to.getName().toUpperCase()+ChatFormat.DARK_GREEN);
 		}
 		else
 		{
-			return ChatColor.DARK_RED+Main.gameEngine.dict.get("teamchangeUnbalanced");
+			return ChatFormat.DARK_RED+Main.gameEngine.dict.get("teamchangeUnbalanced");
 		}
 	}
 
@@ -1233,8 +1233,8 @@ public class Match
 	
 	public void radioStationDestroyed(RadioStation radioStation)
 	{
-		this.sendTeamMessage(teamRed,ChatColor.GREEN+Main.gameEngine.dict.get("rsDestroyed"));
-		this.sendTeamMessage(teamBlue,ChatColor.RED+Main.gameEngine.dict.get("rsLost"));
+		this.sendTeamMessage(teamRed,ChatFormat.GREEN+Main.gameEngine.dict.get("rsDestroyed"));
+		this.sendTeamMessage(teamBlue,ChatFormat.RED+Main.gameEngine.dict.get("rsLost"));
 		this.teamBlue.subPoints(1.0d);
 		if(radioStationIterator.hasNext())
 		{
@@ -1303,8 +1303,8 @@ public class Match
 	
 	public void win(Team winner)
 	{
-		this.sendTeamMessage(winner,ChatColor.DARK_GREEN+Main.gameEngine.dict.get("won"));
-		this.sendTeamMessage(winner.equals(teamRed) ? teamBlue : teamRed,ChatColor.DARK_RED+Main.gameEngine.dict.get("lost"));
+		this.sendTeamMessage(winner,ChatFormat.DARK_GREEN+Main.gameEngine.dict.get("won"));
+		this.sendTeamMessage(winner.equals(teamRed) ? teamBlue : teamRed,ChatFormat.DARK_RED+Main.gameEngine.dict.get("lost"));
 		this.endMatch();
 	}
 	

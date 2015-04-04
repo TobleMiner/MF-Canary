@@ -35,6 +35,11 @@ public class Vector extends Vector3D
 		return this.x * v.getX() + this.y * v.getY() + this.z * v.getZ();
 	}
 	
+	public double angle(Vector3D v)
+	{
+		return Math.acos(this.dot(v) / (this.getMagnitude() * v.getMagnitude()));
+	}
+	
 	public double length()
 	{
 		return this.getMagnitude();
